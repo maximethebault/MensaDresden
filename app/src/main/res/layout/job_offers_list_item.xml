@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:background="@android:color/white"
+    >
+
+    <TextView
+        android:id="@+id/job_offer_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:text="Translation"
+        android:textColor="#141414"
+        android:textSize="24sp"
+        />
+
+    <TextView
+        android:id="@+id/job_offer_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/job_offer_title"
+        android:maxLines="3"
+        android:padding="8dp"
+        android:text="Looking for an English to German translator. About 5000 words to translate, in the field of energy and new technology."
+        android:textColor="#797979"
+        android:textSize="14sp"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        >
+
+        <TextView
+            android:id="@+id/job_offer_distance_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:maxLines="3"
+            android:padding="8dp"
+            android:text="233m"
+            android:textColor="#707070"
+            android:textSize="14sp"
+            />
+
+        <com.mikepenz.iconics.view.IconicsImageView
+            android:id="@+id/job_offer_distance_icon"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_toStartOf="@id/job_offer_distance_text"
+            app:iiv_color="#c8c8c8"
+            app:iiv_icon="gmd-place"
+            />
+
+    </RelativeLayout>
+
+</RelativeLayout>

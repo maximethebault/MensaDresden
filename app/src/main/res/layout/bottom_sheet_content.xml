@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    android:paddingBottom="16dp"
+    >
+
+    <LinearLayout
+        android:id="@+id/bottom_sheet_title_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_sheet_peek_height"
+        android:orientation="horizontal"
+        android:background="@android:color/white"
+        android:paddingBottom="8dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:paddingTop="5dp"
+            >
+
+            <TextView
+                android:id="@+id/bottom_sheet_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Université technologique de Dresde"
+                android:textColor="@android:color/black"
+                android:textSize="24sp"
+                android:scrollHorizontally="true"
+                android:ellipsize="end"
+                android:maxLines="1"
+                />
+
+            <TextView
+                android:id="@+id/bottom_sheet_employer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Employer name"
+                android:textColor="#555555"
+                android:textSize="12sp"
+                android:scrollHorizontally="true"
+                android:ellipsize="end"
+                android:maxLines="1"
+                />
+
+            <!--<TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Text dummy qwer asdf zxcv"
+                android:textSize="12sp"
+                />-->
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/bottom_sheet_distance"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:layout_marginTop="40dp"
+            android:textAlignment="center"
+            android:text="5 km"
+            android:textColor="@color/materialBlue"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="14sp"
+            />
+
+
+        <!--android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"-->
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/bottom_sheet_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+
+        android:text="Petit texte"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="12sp"
+        />
+
+</LinearLayout>
