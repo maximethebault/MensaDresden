@@ -16,6 +16,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:padding="8dp"
+        android:paddingEnd="90dp"
         android:text="Translation"
         android:textColor="#141414"
         android:textSize="24sp"

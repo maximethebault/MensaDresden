@@ -1,11 +1,13 @@
 package org.tud.mensadresden.finding.offers.model;
 
+import android.location.Location;
+
 public class Mensa {
     private int id;
     private String name;
     private String city;
     private String address;
-    private SerializableLocation coordinates;
+    private Location coordinates;
 
     public int getId() {
         return id;
@@ -39,11 +41,11 @@ public class Mensa {
         this.address = address;
     }
 
-    public SerializableLocation getCoordinates() {
+    public Location getCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(SerializableLocation coordinates) {
+    public void setCoordinates(Location coordinates) {
         this.coordinates = coordinates;
     }
 }

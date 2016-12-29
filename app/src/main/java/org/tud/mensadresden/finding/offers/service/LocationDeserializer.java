@@ -20,8 +20,8 @@ public class LocationDeserializer implements JsonDeserializer<Location> {
         double y = json.getAsJsonArray().get(1).getAsDouble();
 
         Location location = new Location("");
-        location.setLongitude(x);
-        location.setLatitude(y);
+        location.setLongitude(y);
+        location.setLatitude(x);
         return location;
     }
 

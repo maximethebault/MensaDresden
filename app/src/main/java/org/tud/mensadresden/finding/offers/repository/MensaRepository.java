@@ -7,6 +7,8 @@ import org.tud.mensadresden.finding.offers.model.Mensa;
 import java.util.List;
 
 public interface MensaRepository {
+    Mensa findById(String id);
+
     List<Mensa> findAllOrderedByDistance(Location location);
 
     void insertAll(List<Mensa> mensas);

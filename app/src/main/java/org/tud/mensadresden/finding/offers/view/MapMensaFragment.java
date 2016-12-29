@@ -6,6 +6,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
@@ -14,12 +15,11 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
-import android.text.SpannableStringBuilder;
-import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -31,20 +31,19 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.maps.android.ui.IconGenerator;
 
 import org.tud.mensadresden.R;
+import org.tud.mensadresden.finding.offers.model.Mensa;
+import org.tud.mensadresden.finding.offers.service.ErrorType;
+import org.tud.mensadresden.finding.offers.service.FetchMensaListener;
 import org.tud.mensadresden.finding.offers.service.MensaService;
 import org.tud.mensadresden.service.LocationService;
 
 import java.util.List;
 
-import static android.graphics.Typeface.BOLD;
-import static android.graphics.Typeface.NORMAL;
-import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
 import static org.tud.mensadresden.finding.offers.service.Utils.formatDistance;
 
-public class MapMensaFragment extends Fragment implements LocationService.LocationUpdateListener, MensaService.JobOffersUpdateListener {
+public class MapMensaFragment extends Fragment implements LocationService.LocationUpdateListener, FetchMensaListener {
     private LocationService locationService;
     private MensaService mensaService;
     private SupportMapFragment fragment;
@@ -58,13 +57,14 @@ public class MapMensaFragment extends Fragment implements LocationService.Locati
     private TextView bottomSheetEmployer;
     private TextView bottomSheetDistance;
     private TextView bottomSheetDescription;
+    private ProgressBar bottomSheetLoader;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         locationService = LocationService.getInstance();
-        mensaService = MensaService.getInstance(getContext());
+        mensaService = MensaService.getInstance();
 
         hasUserInteracted = false;
     }
@@ -84,6 +84,7 @@ public class MapMensaFragment extends Fragment implements LocationService.Locati
         bottomSheetEmployer = (TextView) view.findViewById(R.id.bottom_sheet_employer);
         bottomSheetDistance = (TextView) view.findViewById(R.id.bottom_sheet_distance);
         bottomSheetDescription = (TextView) view.findViewById(R.id.bottom_sheet_description);
+        bottomSheetLoader = (ProgressBar) view.findViewById(R.id.bottom_sheet_loader);
         final FloatingActionButton bottomSheetFab = (FloatingActionButton) view.findViewById(R.id.bottom_sheet_fab);
 
         bottomSheetView = view.findViewById(R.id.bottom_sheet);
@@ -151,6 +152,23 @@ public class MapMensaFragment extends Fragment implements LocationService.Locati
 
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            bottomSheetLoader.setVisibility(View.GONE);
+                        }
+                    }, 1000);
+                } else if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            bottomSheetLoader.setVisibility(View.VISIBLE);
+                        }
+                    }, 0);
+                }
             }
 
             @Override
@@ -183,12 +201,8 @@ public class MapMensaFragment extends Fragment implements LocationService.Locati
     public void onStart() {
         super.onStart();
 
-        if (mensaService.getMostRecentlyFetchedJobs() != null) {
-            updateMapMarker(mensaService.getMostRecentlyFetchedJobs());
-        }
-
         locationService.addLocationUpdateListener(this);
-        mensaService.addJobOffersUpdateListener(this);
+        mensaService.addMensaUpdateListener(this);
     }
 
     @Override
@@ -196,7 +210,7 @@ public class MapMensaFragment extends Fragment implements LocationService.Locati
         super.onStop();
 
         locationService.removeLocationUpdateListener(this);
-        mensaService.removeJobOffersUpdateListener(this);
+        mensaService.removeMensaUpdateListener(this);
     }
 
     @Override
@@ -264,8 +278,8 @@ public class MapMensaFragment extends Fragment implements LocationService.Locati
                 googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
                     public boolean onMarkerClick(Marker marker) {
-                        String jobId = marker.getTitle();
-                        updateBottomSheetWithJob(jobId);
+                        String mensaId = marker.getTitle();
+                        updateBottomSheetWithJob(mensaId);
                         // show the bottom sheet
                         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                         // center the camero on the marker
@@ -279,21 +293,22 @@ public class MapMensaFragment extends Fragment implements LocationService.Locati
         });
     }
 
-    private void updateBottomSheetWithJob(String jobId) {
-        Job job = mensaService.getIdToJob().get(jobId);
-        if (job != null) {
-            bottomSheetTitle.setText(job.getName());
-            bottomSheetDescription.setText(job.getDescription());
+    private void updateBottomSheetWithJob(String mensaId) {
+        Mensa mensa = mensaService.getMensaById(getContext(), mensaId);
+        if (mensa != null) {
+            bottomSheetTitle.setText(mensa.getName());
+            bottomSheetEmployer.setText(mensa.getAddress());
+            bottomSheetDescription.setText(mensa.getAddress());
             Location currentLocation = LocationService.getInstance().getMostRecentLocation();
             if (currentLocation != null) {
-                bottomSheetDistance.setText(formatDistance(job.getLocation().distanceTo(currentLocation), 0));
+                bottomSheetDistance.setText(formatDistance(mensa.getCoordinates().distanceTo(currentLocation), 0));
             } else {
                 bottomSheetDistance.setText("");
             }
         }
     }
 
-    private void updateMapMarker(final List<Job> jobs) {
+    private void updateMapMarker(final List<Mensa> mensas) {
         fragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
@@ -301,28 +316,14 @@ public class MapMensaFragment extends Fragment implements LocationService.Locati
                     return;
                 }
                 googleMap.clear();
-                IconGenerator iconFactory = new IconGenerator(getContext());
-                iconFactory.setRotation(90);
-                iconFactory.setContentRotation(-90);
-                for (Job job : jobs) {
-                    iconFactory.setStyle(IconGenerator.STYLE_GREEN);
+                for (Mensa mensa : mensas) {
                     googleMap.addMarker(new MarkerOptions()
-                            .icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(MapMensaFragment.this.makeCharSequence(String.valueOf(job.getReward())))))
-                            .position(new LatLng(job.getLocation().getLatitude(), job.getLocation().getLongitude()))
-                            .title(job.getId())
-                            .anchor(iconFactory.getAnchorU(), iconFactory.getAnchorV()));
+                            .icon(BitmapDescriptorFactory.defaultMarker())
+                            .position(new LatLng(mensa.getCoordinates().getLatitude(), mensa.getCoordinates().getLongitude()))
+                            .title(String.valueOf(mensa.getId())));
                 }
             }
         });
-    }
-
-    private CharSequence makeCharSequence(String price) {
-        String suffix = "€";
-        String sequence = price + suffix;
-        SpannableStringBuilder ssb = new SpannableStringBuilder(sequence);
-        ssb.setSpan(new StyleSpan(BOLD), 0, price.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
-        ssb.setSpan(new StyleSpan(NORMAL), price.length(), sequence.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
-        return ssb;
     }
 
     @Override
@@ -342,7 +343,17 @@ public class MapMensaFragment extends Fragment implements LocationService.Locati
     }
 
     @Override
-    public void onJobOffersUpdate(List<Job> mostRecentlyFetchedJobs) {
-        updateMapMarker(mostRecentlyFetchedJobs);
+    public void onStarted() {
+
+    }
+
+    @Override
+    public void onSuccess(boolean wasMensaListUpdated, List<Mensa> mensas) {
+        updateMapMarker(mensas);
+    }
+
+    @Override
+    public void onFail(ErrorType errorType, String error) {
+
     }
 }

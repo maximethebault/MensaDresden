@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.mikepenz.iconics.view.IconicsImageView;
 
 import org.tud.mensadresden.R;
+import org.tud.mensadresden.finding.offers.model.Mensa;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,18 +34,18 @@ public class ListMensaAdapter extends RecyclerView.Adapter<ListMensaAdapter.Hold
         }
     }
 
-    private List<Job> items;
+    private List<Mensa> items;
     private Location currentLocation;
 
     ListMensaAdapter() {
         this.items = new ArrayList<>();
     }
 
-    ListMensaAdapter(List<Job> items) {
+    ListMensaAdapter(List<Mensa> items) {
         this.items = items;
     }
 
-    public void setItems(List<Job> items) {
+    public void setItems(List<Mensa> items) {
         this.items = items;
         notifyDataSetChanged();
     }
@@ -61,11 +62,11 @@ public class ListMensaAdapter extends RecyclerView.Adapter<ListMensaAdapter.Hold
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
-        Job job = items.get(position);
-        holder.title.setText(job.getName());
-        holder.description.setText(job.getDescription());
+        Mensa mensa = items.get(position);
+        holder.title.setText(mensa.getName());
+        holder.description.setText(mensa.getAddress());
         if (currentLocation != null) {
-            holder.distance.setText(formatDistance(job.getLocation().distanceTo(currentLocation), 1));
+            holder.distance.setText(formatDistance(mensa.getCoordinates().distanceTo(currentLocation), 1));
             holder.icon.setVisibility(View.VISIBLE);
         } else {
             holder.distance.setText("");

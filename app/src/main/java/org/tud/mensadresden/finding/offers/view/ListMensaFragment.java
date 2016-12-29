@@ -13,15 +13,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.android.volley.VolleyError;
-
 import org.tud.mensadresden.R;
+import org.tud.mensadresden.finding.offers.model.Mensa;
+import org.tud.mensadresden.finding.offers.service.ErrorType;
+import org.tud.mensadresden.finding.offers.service.FetchMensaListener;
 import org.tud.mensadresden.finding.offers.service.MensaService;
 import org.tud.mensadresden.service.LocationService;
 
 import java.util.List;
 
-public class ListMensaFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, MensaService.JobOffersUpdateListener, LocationService.LocationUpdateListener {
+public class ListMensaFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, LocationService.LocationUpdateListener, FetchMensaListener {
     private LocationService locationService;
     private MensaService mensaService;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -32,7 +33,7 @@ public class ListMensaFragment extends Fragment implements SwipeRefreshLayout.On
         super.onCreate(savedInstanceState);
 
         locationService = LocationService.getInstance();
-        mensaService = MensaService.getInstance(getContext());
+        mensaService = MensaService.getInstance();
     }
 
     @Nullable
@@ -59,19 +60,7 @@ public class ListMensaFragment extends Fragment implements SwipeRefreshLayout.On
         adapter.setCurrentLocation(locationService.getMostRecentLocation());
         recyclerView.setAdapter(adapter);
 
-        if (mensaService.getMostRecentlyFetchedJobs() == null) {
-            if (locationService.getMostRecentLocation() != null) {
-                swipeRefreshLayout.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefreshLayout.setRefreshing(true);
-                        onRefresh();
-                    }
-                });
-            }
-        } else {
-            adapter.setItems(mensaService.getMostRecentlyFetchedJobs());
-        }
+        onRefresh();
     }
 
     @Override
@@ -79,7 +68,7 @@ public class ListMensaFragment extends Fragment implements SwipeRefreshLayout.On
         super.onStart();
 
         locationService.addLocationUpdateListener(this);
-        mensaService.addJobOffersUpdateListener(this);
+        mensaService.addMensaUpdateListener(this);
     }
 
     @Override
@@ -87,7 +76,7 @@ public class ListMensaFragment extends Fragment implements SwipeRefreshLayout.On
         super.onStop();
 
         locationService.removeLocationUpdateListener(this);
-        mensaService.removeJobOffersUpdateListener(this);
+        mensaService.removeMensaUpdateListener(this);
     }
 
     @Override
@@ -97,42 +86,52 @@ public class ListMensaFragment extends Fragment implements SwipeRefreshLayout.On
 
     @Override
     public void onRefresh() {
-        MensaService.getInstance(getContext()).refreshJobOffers(getContext(), new MensaService.JobOffersRefreshCallback() {
-            @Override
-            public void onSuccess() {
-                swipeRefreshLayout.setRefreshing(false);
-            }
-
-            @Override
-            public void onFail(MensaService.JobOffersRefreshError errorStatus, VolleyError error) {
-                swipeRefreshLayout.setRefreshing(false);
-                switch (errorStatus) {
-                    case LOCATION_UNAVAILABLE:
-                        Toast.makeText(getContext(), "Could not refresh: location unavailable", Toast.LENGTH_LONG).show();
-                        break;
-                    case NETWORK_ERROR:
-                        Toast.makeText(getContext(), "Could not refresh: network error", Toast.LENGTH_LONG).show();
-                        break;
-                }
-            }
-        });
+        mensaService.fetchMensa(getContext());
     }
 
     @Override
     public void onLocationUpdate(Location location) {
         adapter.setCurrentLocation(location);
         adapter.notifyDataSetChanged();
+        onRefresh();
+    }
+
+    @Override
+    public void onStarted() {
         swipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
                 swipeRefreshLayout.setRefreshing(true);
-                onRefresh();
             }
         });
     }
 
     @Override
-    public void onJobOffersUpdate(List<Job> mostRecentlyFetchedJobs) {
-        adapter.setItems(mostRecentlyFetchedJobs);
+    public void onSuccess(boolean wasMensaListUpdated, List<Mensa> mensas) {
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+        adapter.setItems(mensas);
+    }
+
+    @Override
+    public void onFail(ErrorType errorType, String error) {
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+        switch (errorType) {
+            case LOCATION_ERROR:
+                Toast.makeText(getContext(), "Could not refresh: location unavailable", Toast.LENGTH_LONG).show();
+                break;
+            case NETWORK_ERROR:
+                Toast.makeText(getContext(), "Could not refresh: network error", Toast.LENGTH_LONG).show();
+                break;
+        }
     }
 }
