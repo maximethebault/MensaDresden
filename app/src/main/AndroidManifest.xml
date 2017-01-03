@@ -27,7 +27,7 @@
         </activity>
 
         <activity
-            android:name="org.tud.mensadresden.finding.offers.view.MensaDetailsActivity"
+            android:name=".ui.finding.mensa.MensaDetailsActivity"
             android:configChanges="orientation|screenSize"
             android:parentActivityName="org.tud.mensadresden.MainActivity"
             android:theme="@style/AppTheme.DetailActivity"

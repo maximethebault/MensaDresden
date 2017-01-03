@@ -41,10 +41,10 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
-import org.tud.mensadresden.dialog.ConnectionFailedDialog;
-import org.tud.mensadresden.finding.MensaFragment;
-import org.tud.mensadresden.finding.offers.view.TabMensaFragment;
-import org.tud.mensadresden.service.LocationService;
+import org.tud.mensadresden.model.service.global.LocationService;
+import org.tud.mensadresden.ui.dialog.ConnectionFailedDialog;
+import org.tud.mensadresden.ui.finding.MensaFragment;
+import org.tud.mensadresden.ui.finding.mensa.TabMensaFragment;
 
 import java.util.HashMap;
 
@@ -116,7 +116,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         isReceivingLocationUpdates = false;
         locationService = LocationService.getInstance();
         locationService.setLocationRequestListener(this);
-
     }
 
     @Override
