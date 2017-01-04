@@ -13,6 +13,7 @@ import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.tud.mensadresden.model.entity.Day;
+import org.tud.mensadresden.model.entity.Meal;
 import org.tud.mensadresden.model.entity.Mensa;
 import org.tud.mensadresden.model.service.global.NetworkService;
 
@@ -111,6 +112,42 @@ public class MensaApiService {
                                 );
                                 if (callback != null) {
                                     callback.onSuccess(true, days);
+                                }
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                if (callback != null) {
+                                    callback.onFail(ErrorType.NETWORK_ERROR, error.getMessage());
+                                }
+                            }
+                        }
+                )
+        );
+    }
+
+    public void findAllMeals(final Context context, final String mensaId, final String day, final FetchMensaListener<List<Meal>> callback) {
+        if (callback != null) {
+            callback.onStarted();
+        }
+
+        String uri = String.format("http://openmensa.org/api/v2/canteens/%1$s/days/%2$s/meals", mensaId, day);
+        NetworkService.getInstance(context).addToRequestQueue(
+                new JsonArrayRequest(
+                        Request.Method.GET,
+                        uri,
+                        null,
+                        new Response.Listener<JSONArray>() {
+                            @Override
+                            public void onResponse(JSONArray response) {
+                                List<Meal> meals = gson.fromJson(
+                                        response.toString(),
+                                        new TypeToken<List<Meal>>() {
+                                        }.getType()
+                                );
+                                if (callback != null) {
+                                    callback.onSuccess(true, meals);
                                 }
                             }
                         },

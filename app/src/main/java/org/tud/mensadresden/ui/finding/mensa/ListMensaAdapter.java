@@ -61,7 +61,7 @@ public class ListMensaAdapter extends RecyclerView.Adapter<ListMensaAdapter.Hold
 
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int position) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_offers_list_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.mensa_offers_list_item, parent, false);
         return new Holder(view);
     }
 
@@ -81,7 +81,7 @@ public class ListMensaAdapter extends RecyclerView.Adapter<ListMensaAdapter.Hold
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, MensaDetailsActivity.class);
-                i.putExtra("id", mensa.getId());
+                i.putExtra("id", String.valueOf(mensa.getId()));
                 context.startActivity(i);
             }
         });

@@ -34,7 +34,6 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
@@ -43,7 +42,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import org.tud.mensadresden.model.service.global.LocationService;
 import org.tud.mensadresden.ui.dialog.ConnectionFailedDialog;
-import org.tud.mensadresden.ui.finding.MensaFragment;
+import org.tud.mensadresden.ui.finding.AboutFragment;
 import org.tud.mensadresden.ui.finding.mensa.TabMensaFragment;
 
 import java.util.HashMap;
@@ -51,14 +50,8 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, LocationService.LocationRequestListener {
 
     private enum ItemLabel {
-        HOME(1),
-        JOB_LIST(2),
-        ACCEPTED(3),
-        POSTED(4),
-        NEW_OFFER(5),
-        SETTINGS(6),
-        CONTACT(7),
-        STARRED(8);
+        MENSA_LIST(2),
+        ABOUT(7);
 
         public final long id;
 
@@ -98,12 +91,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         setContentView(R.layout.activity_main);
 
         itemToFragment = new HashMap<>();
-        itemToFragment.put(ItemLabel.JOB_LIST, TabMensaFragment.class);
-        itemToFragment.put(ItemLabel.ACCEPTED, MensaFragment.class);
+        itemToFragment.put(ItemLabel.MENSA_LIST, TabMensaFragment.class);
+        itemToFragment.put(ItemLabel.ABOUT, AboutFragment.class);
 
         itemToToolbarElevation = new HashMap<>();
-        itemToToolbarElevation.put(ItemLabel.JOB_LIST, 0f);
-        itemToToolbarElevation.put(ItemLabel.ACCEPTED, 6f);
+        itemToToolbarElevation.put(ItemLabel.MENSA_LIST, 0f);
+        itemToToolbarElevation.put(ItemLabel.ABOUT, 6f);
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.activity_main_toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
@@ -131,21 +124,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 .addDrawerItems(
                         //new PrimaryDrawerItem().withName("Home").withIdentifier(ItemLabel.HOME.id).withIcon(GoogleMaterial.Icon.gmd_home),
 
-                        new SectionDrawerItem().withName(R.string.drawer_findjob).withDivider(false),
-                        new PrimaryDrawerItem().withName(R.string.drawer_offers).withIdentifier(ItemLabel.JOB_LIST.id).withIcon(FontAwesome.Icon.faw_location_arrow),
-                        new PrimaryDrawerItem().withName(R.string.drawer_accepted).withIdentifier(ItemLabel.ACCEPTED.id).withIcon(GoogleMaterial.Icon.gmd_work),
-                        //new PrimaryDrawerItem().withName("Starred jobs").withIdentifier(ItemLabel.STARRED.id).withIcon(GoogleMaterial.Icon.gmd_star),
-
-                        new SectionDrawerItem().withName(R.string.drawer_postjob),
-                        new PrimaryDrawerItem().withName(R.string.drawer_postedjobs).withIdentifier(ItemLabel.POSTED.id).withIcon(GoogleMaterial.Icon.gmd_history),
-                        new PrimaryDrawerItem().withName(R.string.drawer_newjob).withIdentifier(ItemLabel.NEW_OFFER.id).withIcon(GoogleMaterial.Icon.gmd_edit)
-
+                        new SectionDrawerItem().withName(R.string.drawer_mensa).withDivider(false),
+                        new PrimaryDrawerItem().withName(R.string.drawer_offers).withIdentifier(ItemLabel.MENSA_LIST.id).withIcon(FontAwesome.Icon.faw_location_arrow)
                 )
-                .withSelectedItem(ItemLabel.JOB_LIST.id)
+                .withSelectedItem(ItemLabel.MENSA_LIST.id)
                 .withFireOnInitialOnClick(true)
                 .addStickyDrawerItems(
-                        new PrimaryDrawerItem().withName("Settings").withIdentifier(ItemLabel.SETTINGS.id).withIcon(GoogleMaterial.Icon.gmd_settings),
-                        new PrimaryDrawerItem().withName("Contact").withIdentifier(ItemLabel.CONTACT.id).withIcon(GoogleMaterial.Icon.gmd_contact_mail)
+                        new PrimaryDrawerItem().withName("About").withIdentifier(ItemLabel.ABOUT.id).withIcon(FontAwesome.Icon.faw_question)
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override

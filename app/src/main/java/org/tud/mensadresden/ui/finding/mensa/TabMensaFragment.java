@@ -1,6 +1,5 @@
 package org.tud.mensadresden.ui.finding.mensa;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -14,9 +13,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.iconics.IconicsDrawable;
 
 import org.tud.mensadresden.R;
 
@@ -81,7 +77,7 @@ public class TabMensaFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        return inflater.inflate(R.layout.job_offers, container, false);
+        return inflater.inflate(R.layout.mensa_offers, container, false);
     }
 
     @Override
@@ -106,10 +102,10 @@ public class TabMensaFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
-        inflater.inflate(R.menu.job_offers_options, menu);
+        /*inflater.inflate(R.menu.job_offers_options, menu);
         menu.findItem(R.id.job_offers_filter).setIcon(
                 new IconicsDrawable(getContext()).icon(GoogleMaterial.Icon.gmd_filter_list).actionBar().color(Color.WHITE)
-        );
+        );*/
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -117,7 +113,6 @@ public class TabMensaFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.job_offers_filter:
-                // TODO
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

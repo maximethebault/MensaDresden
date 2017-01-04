@@ -1,11 +1,7 @@
 <resources>
     <string name="app_name">MensaDresden</string>
-    <string name="drawer_findjob">Find x job</string>
-    <string name="drawer_offers">Job offers</string>
-    <string name="drawer_accepted">Accepted jobs</string>
-    <string name="drawer_postjob">Post x job</string>
-    <string name="drawer_postedjobs">Posted jobs</string>
-    <string name="drawer_newjob">New job offer</string>
+    <string name="drawer_mensa">Mensa</string>
+    <string name="drawer_offers">List</string>
     <string name="offers_mapview">Map view</string>
     <string name="offers_listview">List view</string>
     <string name="offers_filters">Filters</string>
@@ -15,18 +11,5 @@
 
     <string name="BottomSheetBehaviorGoogleMapsLike">org.tud.mensadresden.ui.behavior.BottomSheetBehaviorGoogleMapsLike</string>
     <string name="ScrollAwareFABBehavior">org.tud.mensadresden.ui.behavior.ScrollAwareFABBehavior</string>
-
-    <string name="key_binding_default_toolbar_name">Modal-Toolbar-Title</string>
-
-    <string name="dummy_text">Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain x copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet x, venenatis vitae, justo.\n\nLorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet x, venenatis vitae, justo."</string>
+    <string name="about_text">Developped for TUD Mobile Cartography course</string>
 </resources>

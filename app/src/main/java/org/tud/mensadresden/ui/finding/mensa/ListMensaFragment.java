@@ -1,6 +1,5 @@
 package org.tud.mensadresden.ui.finding.mensa;
 
-import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -40,7 +39,7 @@ public class ListMensaFragment extends Fragment implements SwipeRefreshLayout.On
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.job_offers_list, container, false);
+        return inflater.inflate(R.layout.mensa_offers_list, container, false);
     }
 
     @Override
@@ -56,14 +55,6 @@ public class ListMensaFragment extends Fragment implements SwipeRefreshLayout.On
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 layoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
-        recyclerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getContext(), MensaDetailsActivity.class);
-                i.putExtra("id", v.getId());
-                startActivity(i);
-            }
-        });
 
         adapter = new ListMensaAdapter(getContext());
         adapter.setCurrentLocation(locationService.getMostRecentLocation());

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.location.Location;
 
 import org.tud.mensadresden.model.entity.Day;
+import org.tud.mensadresden.model.entity.Meal;
 import org.tud.mensadresden.model.entity.Mensa;
 import org.tud.mensadresden.model.repository.SqlMensaRepository;
 import org.tud.mensadresden.model.service.global.LocationService;
@@ -95,9 +96,12 @@ public class MensaService {
         return mensaRepository.findById(id);
     }
 
-
     public void fetchDaysForMensaId(final Context context, final String mensaId, final FetchMensaListener<List<Day>> callback) {
         mensaApiService.findAllDaysByMensaId(context, mensaId, callback);
+    }
+
+    public void fetchMeals(final Context context, final String mensaId, Day day, final FetchMensaListener<List<Meal>> callback) {
+        mensaApiService.findAllMeals(context, mensaId, day.getDate(), callback);
     }
 
     public void addMensaUpdateListener(FetchMensaListener<List<Mensa>> updateListener) {
