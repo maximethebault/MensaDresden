@@ -2,9 +2,9 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion '25.0.1'
+    buildToolsVersion '25.0.2'
     defaultConfig {
-        applicationId "org.tud.mensadresden"
+        applicationId "org.tud.mensaapp"
         vectorDrawables.useSupportLibrary = true
         minSdkVersion 21
         targetSdkVersion 24
