@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="org.tud.mensadresden"
+          package="org.tud.mensaapp"
     >
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
-        android:name="org.tud.mensadresden.MensaDresdenApplication"
+        android:name="org.tud.mensaapp.MensaApplication"
         android:allowBackup="true"
         android:icon="@mipmap/launcher"
         android:label="@string/app_name"
@@ -17,7 +17,7 @@
         android:theme="@style/AppTheme"
         >
         <activity
-            android:name="org.tud.mensadresden.MainActivity"
+            android:name="org.tud.mensaapp.MainActivity"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -27,9 +27,9 @@
         </activity>
 
         <activity
-            android:name=".ui.finding.mensa.MensaDetailsActivity"
+            android:name="org.tud.mensaapp.ui.finding.mensa.MensaDetailsActivity"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName="org.tud.mensadresden.MainActivity"
+            android:parentActivityName="org.tud.mensaapp.MainActivity"
             android:theme="@style/AppTheme.DetailActivity"
             >
         </activity>

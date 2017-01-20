@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MensaDresden</string>
+    <string name="app_name">MensaApp</string>
     <string name="drawer_mensa">Mensa</string>
     <string name="drawer_offers">List</string>
     <string name="offers_mapview">Map view</string>
@@ -9,7 +9,7 @@
     <string name="details_menu">Menu</string>
     <string name="details_title">Mensa details</string>
 
-    <string name="BottomSheetBehaviorGoogleMapsLike">org.tud.mensadresden.ui.behavior.BottomSheetBehaviorGoogleMapsLike</string>
-    <string name="ScrollAwareFABBehavior">org.tud.mensadresden.ui.behavior.ScrollAwareFABBehavior</string>
-    <string name="about_text">Developped for TUD Mobile Cartography course</string>
+    <string name="BottomSheetBehaviorGoogleMapsLike">org.tud.mensaapp.ui.behavior.BottomSheetBehaviorGoogleMapsLike</string>
+    <string name="ScrollAwareFABBehavior">org.tud.mensaapp.ui.behavior.ScrollAwareFABBehavior</string>
+    <string name="about_text">Developed for TUD Mobile Cartography course</string>
 </resources>
