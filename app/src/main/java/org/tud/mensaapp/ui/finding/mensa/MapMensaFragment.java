@@ -200,6 +200,11 @@ public class MapMensaFragment extends Fragment implements LocationService.Locati
                 }
             }
         });
+
+        lastClickedMensaId = savedInstanceState != null ? savedInstanceState.getString("mensaId") : null;
+        if (lastClickedMensaId != null) {
+            updateBottomSheetWithMensa(lastClickedMensaId);
+        }
     }
 
     @Override
@@ -224,6 +229,7 @@ public class MapMensaFragment extends Fragment implements LocationService.Locati
         if (bottomSheetBehavior != null) {
             outState.putParcelable("bottom_sheet", bottomSheetBehavior.onSaveInstanceState(coordinatorLayout, bottomSheetView));
         }
+        outState.putString("mensaId", lastClickedMensaId);
     }
 
     @Override
@@ -284,7 +290,7 @@ public class MapMensaFragment extends Fragment implements LocationService.Locati
                     @Override
                     public boolean onMarkerClick(Marker marker) {
                         lastClickedMensaId = marker.getTitle();
-                        updateBottomSheetWithJob(lastClickedMensaId);
+                        updateBottomSheetWithMensa(lastClickedMensaId);
                         // show the bottom sheet
                         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                         // center the camero on the marker
@@ -298,7 +304,7 @@ public class MapMensaFragment extends Fragment implements LocationService.Locati
         });
     }
 
-    private void updateBottomSheetWithJob(String mensaId) {
+    private void updateBottomSheetWithMensa(String mensaId) {
         Mensa mensa = mensaService.getMensaById(getContext(), mensaId);
         if (mensa != null) {
             bottomSheetTitle.setText(mensa.getName());

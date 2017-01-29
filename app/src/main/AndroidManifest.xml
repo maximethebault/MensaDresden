@@ -28,7 +28,6 @@
 
         <activity
             android:name="org.tud.mensaapp.ui.finding.mensa.MensaDetailsActivity"
-            android:configChanges="orientation|screenSize"
             android:parentActivityName="org.tud.mensaapp.MainActivity"
             android:theme="@style/AppTheme.DetailActivity"
             >

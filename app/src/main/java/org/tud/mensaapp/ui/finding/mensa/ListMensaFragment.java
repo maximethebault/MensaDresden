@@ -2,6 +2,7 @@ package org.tud.mensaapp.ui.finding.mensa;
 
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -27,6 +28,8 @@ public class ListMensaFragment extends Fragment implements SwipeRefreshLayout.On
     private MensaService mensaService;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ListMensaAdapter adapter;
+    private RecyclerView recyclerView;
+    private Parcelable layoutManagerState;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,7 +52,7 @@ public class ListMensaFragment extends Fragment implements SwipeRefreshLayout.On
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.job_offers_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.job_offers_list);
+        recyclerView = (RecyclerView) view.findViewById(R.id.job_offers_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
@@ -61,6 +64,23 @@ public class ListMensaFragment extends Fragment implements SwipeRefreshLayout.On
         recyclerView.setAdapter(adapter);
 
         onRefresh();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable("layoutManager", recyclerView.getLayoutManager().onSaveInstanceState());
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+        if (savedInstanceState == null) {
+            return;
+        }
+        layoutManagerState = savedInstanceState.getParcelable("layoutManager");
     }
 
     @Override
@@ -115,6 +135,11 @@ public class ListMensaFragment extends Fragment implements SwipeRefreshLayout.On
             }
         });
         adapter.setItems(mensas);
+
+        if (layoutManagerState != null) {
+            recyclerView.getLayoutManager().onRestoreInstanceState(layoutManagerState);
+            layoutManagerState = null;
+        }
     }
 
     @Override
